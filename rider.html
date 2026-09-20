@@ -865,7 +865,7 @@ function rulebookChecks(course, act, lab, U) {
     if (SPREAD_TYPES.has(p.type) && SPREAD_TYPES.has(f.type) && !big) R(`${lab(p)}–${lab(f)}: spread into spread in a combination is unusual below 1.20 m`);
   });
   // Spreads relative to height
-  act.forEach(f => { if (!SPREAD_TYPES.has(f.type)) return; const sp = (f.spread || defaultSpread(f.type)) * 0.0254; const maxSp = f.type === 'triple' ? m + 0.5 : m + 0.2; if (sp > maxSp + 0.01) R(`${lab(f)} spread ${sp.toFixed(2)} m is wide for ${m.toFixed(2)} m (typical max ${maxSp.toFixed(2)} m)`); });
+  act.forEach(f => { if (!SPREAD_TYPES.has(f.type)) return; const spIn = f.spread || defaultSpread(f.type, f.height); const hIn = f.height || h; const maxIn = f.type === 'triple' ? hIn + 20 : hIn + 8; if (spIn > maxIn + 0.5) R(`${lab(f)} spread ${fmtHeight(spIn, U)} is wide for a ${fmtHeight(hIn, U)} fence (typical max ${fmtHeight(maxIn, U)})`); });
   // Jumper-specific
   if (course.disc === 'jumper') {
     const n = act.length; const efforts = n;
@@ -1005,10 +1005,17 @@ const fmtSecs = s => s == null ? '—' : (s >= 60 ? Math.floor(s / 60) + ':' + S
 function bez(p0, p1, p2, p3, t) { const mt = 1 - t; return { x: mt ** 3 * p0.x + 3 * mt * mt * t * p1.x + 3 * mt * t * t * p2.x + t ** 3 * p3.x, y: mt ** 3 * p0.y + 3 * mt * mt * t * p1.y + 3 * mt * t * t * p2.y + t ** 3 * p3.y }; }
 
 // ---------- SVG rendering ----------
-const defaultSpread = t => ({ oxer: 36, swedish: 36, triple: 48, liverpool: 36 })[t] || 0;
+const defaultSpread = (t, hIn) => {
+  const base = ({ oxer: 36, swedish: 36, triple: 48, liverpool: 36 })[t] || 0;
+  if (!base || !hIn) return base;
+  // Scale the default to the fence height so low courses get sensibly narrow spreads
+  // (typical practice caps: spread ≤ height + 8", triple bars ≤ height + 20")
+  const cap = t === 'triple' ? hIn + 12 : Math.max(12, hIn); // square oxers by default at low heights
+  return Math.min(base, Math.round(cap / 3) * 3);
+};
 function fenceSymbol(f) {
   // Drawn in a local frame: fence spans x ∈ [-w/2, w/2] along the rail, rider travels +y... we rotate so travel = heading.
-  const w = f.width || 12, h = w / 2; const sp = (f.spread || defaultSpread(f.type)) / 12 / 2; // half spread in feet
+  const w = f.width || 12, h = w / 2; const sp = (f.spread || defaultSpread(f.type, f.height)) / 12 / 2; // half spread in feet
   let s = '';
   const rail = (y, cls = 'rail-line') => `<line class="${cls}" x1="${-h}" y1="${y}" x2="${h}" y2="${y}"/>`;
   switch (f.type) {
@@ -1127,7 +1134,7 @@ function riderCourseHTML(c, ring, settings, opts = {}) {
     <div class="rv-plan" id="rvPlan">${renderPlanSVG(c, ring, [], { route: true, dist: true, grid: true, jo: true, unused: false })}</div>
     <div class="rv-zoom"><button class="btn sm" id="rvOut">−</button><span class="hint">pinch or use buttons to zoom</span><button class="btn sm" id="rvIn">+</button><button class="btn sm" id="rvFit">Fit</button></div>
     <div class="rv-stats">${st ? `<span class="chip">${isMetric(U) ? Math.round(st.lengthM) + ' m' : Math.round(st.lengthFt) + "'"} track</span>` : ''}${st && st.timeAllowed ? `<span class="chip">TA ${fmtSecs(st.timeAllowed)} · limit ${fmtSecs(st.timeLimit)}</span>` : ''}<span class="chip">${fmtStride(c.stride, U)} stride</span>${c.disc === 'jumper' && nums.some(n => n.fence.jo) ? `<span class="chip bad">Jump-off: ${nums.filter(n => n.fence.jo).map(n => n.label).join(' – ')}</span>` : ''}</div>
-    <table class="rv-table"><thead><tr><th>#</th><th>Jump</th><th>Height</th><th>To next</th></tr></thead><tbody>${nums.map(({ label, fence: f, idx }) => { const nx = c.fences[idx + 1]; const rel = nx && isActive(nx) ? relatedDistance(f, nx, c.stride) : null; return `<tr><td class="n">${label}</td><td>${esc(f.name)}<br><small>${JUMP_TYPES[f.type]?.label}${f.trot ? ' · trot' : ''}${f.note ? ' — ' + esc(f.note) : ''}</small></td><td class="mono">${fmtHeight(f.height, U)}${SPREAD_TYPES.has(f.type) ? '<br><small>× ' + fmtHeight(f.spread || defaultSpread(f.type), U) + '</small>' : ''}</td><td class="mono">${rel ? (rel.rounded < 1 ? 'bounce' : rel.rounded + (rel.kind === 'bend' ? ' bend' : ' str')) + '<br><small>' + fmtDist(rel.d, U) + '</small>' : ''}</td></tr>`; }).join('')}</tbody></table>
+    <table class="rv-table"><thead><tr><th>#</th><th>Jump</th><th>Height</th><th>To next</th></tr></thead><tbody>${nums.map(({ label, fence: f, idx }) => { const nx = c.fences[idx + 1]; const rel = nx && isActive(nx) ? relatedDistance(f, nx, c.stride) : null; return `<tr><td class="n">${label}</td><td>${esc(f.name)}<br><small>${JUMP_TYPES[f.type]?.label}${f.trot ? ' · trot' : ''}${f.note ? ' — ' + esc(f.note) : ''}</small></td><td class="mono">${fmtHeight(f.height, U)}${SPREAD_TYPES.has(f.type) ? '<br><small>× ' + fmtHeight(f.spread || defaultSpread(f.type, f.height), U) + '</small>' : ''}</td><td class="mono">${rel ? (rel.rounded < 1 ? 'bounce' : rel.rounded + (rel.kind === 'bend' ? ' bend' : ' str')) + '<br><small>' + fmtDist(rel.d, U) + '</small>' : ''}</td></tr>`; }).join('')}</tbody></table>
     ${c.notes ? `<div class="rv-notes"><b>Notes</b><br>${esc(c.notes)}</div>` : ''}<footer class="rv-foot">${esc(c.footer || (settings.facility || '') + ' · Course Designer')}${c.designer ? ' · Course designer: ' + esc(c.designer) : ''}</footer></div>`;
 }
 function riderBindZoom(root) {
