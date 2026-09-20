@@ -1243,9 +1243,19 @@ function showError(title, text) { document.getElementById('riderview').innerHTML
       if (list.length === 1) open(list[0], false); else board(list);
       return;
     }
-    // live links — read the board published next to this page
+    // live links — read the board published next to this page.
+    // GitHub Pages rebuilds the public site in a background job that can lag minutes behind
+    // (and is throttled), so on *.github.io we ALSO read the raw file straight from the
+    // repository and use whichever copy is newest.
     let bd = null;
-    try { const r = await fetch('board.json?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) bd = await r.json(); } catch (e) {}
+    const srcs = ['board.json'];
+    const gh = location.hostname.match(/^([A-Za-z0-9-]+)\.github\.io$/);
+    const seg = location.pathname.split('/').filter(Boolean)[0];
+    if (gh && seg) { srcs.unshift(`https://raw.githubusercontent.com/${gh[1]}/${seg}/main/board.json`, `https://raw.githubusercontent.com/${gh[1]}/${seg}/master/board.json`); }
+    for (const u of srcs) {
+      try { const r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) { const j = await r.json(); if (j && (!bd || (j.updated || 0) > (bd.updated || 0))) bd = j; } } catch (e) {}
+      if (bd && u === srcs[0]) break; // raw copy is authoritative when it loads
+    }
     if (!bd) { showError('No courses here yet', location.protocol === 'file:' ? 'This page reads board.json from the website it is hosted on. Open it from your site, or use a link that carries the course inside it.' : 'The rider board has not been published yet — check back soon.'); return; }
     const list = withList((bd.courses || []).map(p => { const e = SharePayload.unpack(p); if (!e.settings.facility && bd.fac) e.settings.facility = bd.fac; if (bd.brand) e.settings.branding = bd.brand; return e; }));
     if (!h || h === 'riders') { board(list); return; }
