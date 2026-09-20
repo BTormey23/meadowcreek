@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Meadow Creek Course Designer</title>
+<title>Ringcraft — Course Designer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -51,6 +51,15 @@ h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;font-weight:
 .topbar{display:flex;align-items:center;gap:16px;padding:10px 18px;background:var(--paper);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand svg{width:30px;height:30px;color:var(--accent)}
+.brand-logo{height:38px;max-width:120px;object-fit:contain;border-radius:4px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand-logo,:root:not([data-theme="light"]) .brand-prev{background:#FBFAF6;padding:2px 4px}}
+.brand-prev{width:64px;height:64px;border:1px dashed var(--line-2);border-radius:6px;display:flex;align-items:center;justify-content:center;flex:none;color:var(--ink-3);font-size:11px;overflow:hidden}
+.brand-prev img{max-width:100%;max-height:100%;object-fit:contain}
+.help-body{display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
+.help-body details{border:1px solid var(--line);border-radius:var(--radius);padding:0}
+.help-body summary{cursor:pointer;font-weight:600;padding:9px 12px;font-family:var(--font-display)}
+.help-body details[open]{background:var(--paper-2)}
+.help-body p{margin:0;padding:0 12px 11px;color:var(--ink-2);font-size:13px;line-height:1.5}
 .brand .name{font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:.01em}
 .brand .sub{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-top:-2px}
 .topbar .course-title{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start}
@@ -247,6 +256,8 @@ body.rider #riderview{display:block}
 .rv-wrap{max-width:900px;margin:0 auto;padding:14px 14px 40px;display:flex;flex-direction:column;gap:12px}
 .rv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:8px}
 .rv-fac{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.rv-logo{height:44px;max-width:140px;object-fit:contain;display:block;margin-bottom:4px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .rv-logo{background:#FBFAF6;border-radius:4px;padding:2px 4px}}
 .rv-head h1{font-size:22px}
 .rv-sub{font-size:13px;color:var(--ink-2);margin-top:2px}
 .rv-head .order{border:1.5px solid var(--ink);border-radius:4px;padding:3px 9px;font-family:var(--font-mono);font-weight:600;white-space:nowrap}
@@ -293,7 +304,8 @@ table.ledger tr.over td{color:var(--rail)}
 .ps{--footing:#F1EDE3;--footing-grid:#DCD5C5;--rail-line:#5B5246;--paper:#fff;--ink:#111;--ink-2:#444;--ink-3:#777;--accent:#2E5A43;--bay:#8B5A2B;--route:#2E5A43;--route-jo:#B5422F;--line:#CFC9BC;--rail:#B5422F;color:#111}
 .ps{width:7.5in;height:10in;display:grid;grid-template-rows:auto 1fr auto;gap:.1in;page-break-after:always;border:.6pt solid #8E877A;padding:.16in .18in;box-sizing:border-box;background:#fff;position:relative;overflow:hidden}
 .ps::after{content:"";position:absolute;inset:3pt;border:.3pt solid #CFC9BC;pointer-events:none}
-.ps-head{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:end;border-bottom:1.5px solid #1E2A22;padding-bottom:.06in;gap:.2in}
+.ps-head{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:end;border-bottom:1.5px solid #1E2A22;padding-bottom:.06in;gap:.18in}
+.ps-logo img{height:.62in;max-width:1.2in;object-fit:contain;display:block}
 .ps-head h1{font-size:20pt;font-family:var(--font-display);line-height:1.1}
 .ps-head .sub{font-size:10pt;color:#444;margin-top:2px}
 .ps-head .event{font-size:9pt;color:#1E2A22;margin-top:3px;display:flex;gap:.14in;flex-wrap:wrap}
@@ -343,8 +355,9 @@ table.ledger tr.over td{color:var(--rail)}
 <div id="app">
   <header class="topbar">
     <div class="brand">
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 24h24"/><path d="M8 24V12M24 24V12"/><path d="M8 15h16M8 19h16"/><path d="M6 12l2-4 2 4M22 12l2-4 2 4"/></svg>
-      <div><span class="name" id="brandName">Meadow Creek</span><span class="sub">Course Designer</span></div>
+      <img id="brandLogo" class="brand-logo" alt="" style="display:none">
+      <svg id="brandMark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 24h24"/><path d="M8 24V12M24 24V12"/><path d="M8 15h16M8 19h16"/><path d="M6 12l2-4 2 4M22 12l2-4 2 4"/></svg>
+      <div><span class="name" id="brandName">Meadow Creek</span><span class="sub" id="brandSub">Ringcraft</span></div>
     </div>
     <div class="course-title">
       <input id="courseName" type="text" placeholder="Untitled course" aria-label="Course name">
@@ -352,6 +365,7 @@ table.ledger tr.over td{color:var(--rail)}
     </div>
     <div class="actions">
       <span class="savestate" id="saveState"><span class="dot"></span><span class="txt">Loading…</span></span>
+      <button class="btn icon" id="btnHelp" title="Help & quick-start guide" aria-label="Help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.4-3 4"/><circle cx="12" cy="17.6" r=".5" fill="currentColor"/></svg></button>
       <button class="btn" id="btnSave" title="Save now (⌘S)">Save</button>
       <button class="btn" id="btnPrint" title="Print or save as PDF">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Print / PDF</button>
@@ -427,8 +441,21 @@ table.ledger tr.over td{color:var(--rail)}
       </div>
 
       <div class="panel" id="tab-settings">
-        <h3>Facility</h3>
-        <div class="field"><label>Facility name (prints on plans)</label><input id="setFacility" type="text"></div>
+        <h3>Stable &amp; branding</h3>
+        <div class="field"><label>Stable / facility name (shows in the app, on plans and rider pages)</label><input id="setFacility" type="text"></div>
+        <div class="row" style="align-items:center;gap:12px;margin-bottom:10px">
+          <div id="brandPrev" class="brand-prev" title="Logo preview"></div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label class="btn sm" for="brandLogoFile" style="cursor:pointer">Upload logo…<input id="brandLogoFile" type="file" accept="image/*" style="display:none"></label>
+            <button class="btn sm" id="brandLogoClear">Remove logo</button>
+          </div>
+          <span class="hint" style="flex:1">Your logo appears next to the stable name, on printed course plans, and on the rider board riders see on their phones. PNG with a transparent background looks best.</span>
+        </div>
+        <div class="row" style="align-items:center;gap:10px;margin-bottom:10px">
+          <div class="field" style="max-width:130px;margin:0"><label>Accent color</label><input id="brandAccent" type="color" value="#2E5A43" style="height:34px;padding:2px"></div>
+          <button class="btn sm" id="brandAccentReset">Reset color</button>
+          <span class="hint" style="flex:1">Tints buttons, the course route and printed plans. The default hunter green suits most barns.</span>
+        </div>
         <div class="field"><label>Default stride length</label><select id="setStride"></select></div>
         <hr class="divider">
         <div class="web-only">
@@ -459,6 +486,10 @@ table.ledger tr.over td{color:var(--rail)}
           <label class="btn sm" for="importFile" style="cursor:pointer">Import backup<input id="importFile" type="file" accept="application/json" style="display:none"></label>
           <button class="btn sm danger" id="btnReset">Reset to defaults</button>
         </div>
+        <hr class="divider">
+        <h3>About</h3>
+        <p class="hint" style="margin:0 0 8px"><b>Ringcraft</b> <span id="aboutVersion"></span><br>A RippleStone Production by Brian Tormey</p>
+        <div class="row" style="flex-wrap:wrap"><a class="btn sm" id="btnFeature" href="#">Suggest a feature ✉</a><button class="btn sm" id="btnHelp2">Open the guide</button></div>
       </div>
     </aside>
 
@@ -576,6 +607,21 @@ table.ledger tr.over td{color:var(--rail)}
   </div>
   <div class="foot"><button class="btn" id="shCancel">Close</button></div></div></div>
 <div class="modal-bg" id="modalConfirm"><div class="modal small"><h2 id="cfTitle">Are you sure?</h2><p id="cfText"></p><div class="foot"><button class="btn" id="cfNo">Cancel</button><button class="btn danger" id="cfYes">Delete</button></div></div></div>
+<div class="modal-bg" id="modalHelp"><div class="modal" style="width:min(680px,100%)">
+  <h2>Ringcraft — quick guide</h2>
+  <p class="lead">Design stride-correct hunter, jumper and equitation courses; print show-ready plans; share live links and QR codes with riders.</p>
+  <div class="help-body">
+    <details open><summary>Design a course in 30 seconds</summary><p>Click <b>+ New course</b>, pick the ring, discipline and level, and choose a course type — the designer lays out a stride-correct track. Don't like it? <b>Regenerate</b> deals a fresh layout, <b>Mirror</b> flips it. Then adjust by hand: drag any fence to move it, use the round handle to rotate (or press <b>R</b> for 15° steps), arrow keys nudge. Distances between related fences update live, in strides.</p></details>
+    <details><summary>Edit fences &amp; the track</summary><p>Click a fence to edit everything in the right-hand panel: type, name, height, spread, notes, trot fence, combinations, and whether it's in the course. <b>+ Fence</b> and <b>− Fence</b> add and remove. To bend a line by hand, hover a route segment and drag the waypoints that appear; <b>Reset track</b> returns to the automatic route. <b>Measure</b> lets you drag between any two points to read feet and strides.</p></details>
+    <details><summary>One jump layout, many courses</summary><p>Set your jumps once, then design courses for every level without moving a single standard: <b>Save as layout</b> stores the physical set. Starting a new course from that layout keeps every jump in place — use <b>Route by clicking</b> to pick which jumps are in this course and in what order, or <b>Auto-route</b> to let the designer choose. Unused jumps stay ghosted in the ring, exactly like a real show morning.</p></details>
+    <details><summary>Print &amp; PDF</summary><p><b>Print / PDF</b> makes 8.5×11 sheets: the <b>rider plan</b> (route, strides, table, time allowed), the <b>jump crew sheet</b> (every jump with heights, spreads and photos), and the <b>judge / announcer sheet</b>. Tick <b>Print preview</b> in the toolbar to see the sheet update live while you edit. When several courses share a layout, batch-print them all at once.</p></details>
+    <details><summary>Share with riders</summary><p>Mark a course <b>Published to riders</b>, then <b>Share</b>: the short link opens a live, phone-friendly view (edits appear when riders refresh); the QR code prints on rider plans and scans straight to it; the <b>board link</b> lists every published course — text it to the whole barn on show morning. A <b>locked snapshot link</b> never changes even if you edit later. Riders need no account and no app.</p></details>
+    <details><summary>Yellow &amp; red notices</summary><p>Chips under the plan are advisory: distances that walk long or short, tight turns, inventory shortages, and <b>Rule:</b> notes based on typical USEF/FEI practice (combination distances, spreads vs height, effort counts). They never block you — schooling exercises break rules on purpose. Turn <b>Rulebook checks</b> off per course under <b>Course details</b>.</p></details>
+    <details><summary>Your site, your data</summary><p>On your own website, every <b>Save</b> publishes automatically — same courses on every device you've connected in <b>Setup → Website</b>. The site and its course data are public to anyone with the address; your GitHub token is not — it stays in your browser, so never paste it anywhere except Setup. <b>Export backup</b> in Setup makes a file copy any time.</p></details>
+    <details><summary>Make it yours</summary><p>In <b>Setup → Stable &amp; branding</b>, set your stable's name, upload your logo and pick an accent color — they flow to the app, printed plans and rider pages. Running this for another barn? A fresh install gives them their own site; they brand it themselves in the same place.</p></details>
+  </div>
+  <div class="foot" style="justify-content:space-between;align-items:center"><span class="hint">Ringcraft <span id="helpVersion"></span> · A RippleStone Production by Brian Tormey</span><span style="display:flex;gap:8px"><a class="btn sm" id="btnFeature2" href="#">Suggest a feature ✉</a><button class="btn primary" id="helpClose">Close</button></span></div>
+</div></div>
 <div class="toast" id="toast"></div>
 <div id="printsheet"></div>
 <div id="riderview"></div>
@@ -612,6 +658,19 @@ const JUMP_TYPES = {
   crossrail: { label: 'Cross rail',   short: 'X'  },
 };
 const SPREAD_TYPES = new Set(['oxer', 'swedish', 'triple', 'liverpool']);
+
+// ---------- Product identity ----------
+const APP_NAME = 'Ringcraft';
+const APP_VERSION = 'v14';
+const APP_CREDIT = 'A RippleStone Production by Brian Tormey';
+const FEEDBACK_EMAIL = 'brian@briantormey.com';
+const branding = () => (typeof App !== 'undefined' && App.data && App.data.settings && App.data.settings.branding) || { logo: '', accent: '' };
+function featureMailto() {
+  const fac = (typeof App !== 'undefined' && App.data && App.data.settings && App.data.settings.facility) || '';
+  const subject = APP_NAME + ' feature request' + (fac ? ' — ' + fac : '');
+  const body = 'App: ' + APP_NAME + ' ' + APP_VERSION + ' (' + (typeof BUILD !== 'undefined' ? BUILD : '?') + ' build)\n\nMy idea:\n';
+  return 'mailto:' + FEEDBACK_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+}
 
 const DISCIPLINES = {
   hunter: { label: 'Hunter', units: 'imperial' },
@@ -818,7 +877,7 @@ function defaultData() {
   return {
     version: 1,
     updatedAt: Date.now(),
-    settings: { facility: 'Meadow Creek Farm', stride: 12, shareUrl: 'https://claude.ai/code/artifact/bb423942-eb62-4a3c-8c09-8508fbbaa882', riderFirst: false },
+    settings: { facility: 'Meadow Creek Farm', stride: 12, branding: { logo: '', accent: '' }, shareUrl: 'https://claude.ai/code/artifact/bb423942-eb62-4a3c-8c09-8508fbbaa882', riderFirst: false },
     rings: [
       { id: 'r-outdoor', name: 'Outdoor ring', L: 200, W: 100, units: 'ft', gate: 'S', footing: 'Sand / fiber' },
       { id: 'r-indoor', name: 'Indoor arena', L: 160, W: 80, units: 'ft', gate: 'W', footing: 'GGT' },
@@ -897,6 +956,7 @@ const Store = {
     }
     this.data = (remote && local) ? ((local.updatedAt || 0) > (remote.updatedAt || 0) ? local : remote) : (remote || local || defaultData());
     if (!this.data.settings) this.data.settings = { facility: 'Meadow Creek Farm', stride: 12 };
+    if (!this.data.settings.branding) this.data.settings.branding = { logo: '', accent: '' };
     if (!this.data.layouts) this.data.layouts = [];
     if (!this.isWeb()) {
       try {
@@ -1449,12 +1509,12 @@ const QR = (() => {
    ============================================================ */
 function riderCourseHTML(c, ring, settings, opts = {}) {
   const nums = numberFences(c); const U = courseUnits(c); const st = courseStats(c, ring); const lvl = (LEVELS[c.disc] || []).find(l => l.id === c.levelId);
-  return `<div class="rv-wrap"><header class="rv-head"><div>${opts.back ? '<button class="btn sm" id="rvBack" style="margin-bottom:6px">‹ All courses</button><br>' : ''}<div class="rv-fac">${esc(settings.facility || '')}</div><h1>${esc(c.name)}</h1><div class="rv-sub">${[c.className, (DISCIPLINES[c.disc]?.label || '') + (lvl ? ' · ' + lvl.label : ''), fmtHeight(c.height, U), c.event, fmtDate(c.date, c.time), c.timing].filter(Boolean).map(esc).join(' · ')}</div></div>${c.showOrder ? `<div class="order">Class ${esc(c.showOrder)}</div>` : ''}</header>
+  return `<div class="rv-wrap"><header class="rv-head"><div>${opts.back ? '<button class="btn sm" id="rvBack" style="margin-bottom:6px">‹ All courses</button><br>' : ''}${settings.branding && settings.branding.logo ? `<img class="rv-logo" src="${settings.branding.logo}" alt="">` : ''}<div class="rv-fac">${esc(settings.facility || '')}</div><h1>${esc(c.name)}</h1><div class="rv-sub">${[c.className, (DISCIPLINES[c.disc]?.label || '') + (lvl ? ' · ' + lvl.label : ''), fmtHeight(c.height, U), c.event, fmtDate(c.date, c.time), c.timing].filter(Boolean).map(esc).join(' · ')}</div></div>${c.showOrder ? `<div class="order">Class ${esc(c.showOrder)}</div>` : ''}</header>
     <div class="rv-plan" id="rvPlan">${renderPlanSVG(c, ring, [], { route: true, dist: true, grid: true, jo: true, unused: false })}</div>
     <div class="rv-zoom"><button class="btn sm" id="rvOut">−</button><span class="hint">pinch or use buttons to zoom</span><button class="btn sm" id="rvIn">+</button><button class="btn sm" id="rvFit">Fit</button></div>
     <div class="rv-stats">${st ? `<span class="chip">${isMetric(U) ? Math.round(st.lengthM) + ' m' : Math.round(st.lengthFt) + "'"} track</span>` : ''}${st && st.timeAllowed ? `<span class="chip">TA ${fmtSecs(st.timeAllowed)} · limit ${fmtSecs(st.timeLimit)}</span>` : ''}<span class="chip">${fmtStride(c.stride, U)} stride</span>${c.disc === 'jumper' && nums.some(n => n.fence.jo) ? `<span class="chip bad">Jump-off: ${nums.filter(n => n.fence.jo).map(n => n.label).join(' – ')}</span>` : ''}</div>
     <table class="rv-table"><thead><tr><th>#</th><th>Jump</th><th>Height</th><th>To next</th></tr></thead><tbody>${nums.map(({ label, fence: f, idx }) => { const nx = c.fences[idx + 1]; const rel = nx && isActive(nx) ? relatedDistance(f, nx, c.stride) : null; return `<tr><td class="n">${label}</td><td>${esc(f.name)}<br><small>${JUMP_TYPES[f.type]?.label}${f.trot ? ' · trot' : ''}${f.note ? ' — ' + esc(f.note) : ''}</small></td><td class="mono">${fmtHeight(f.height, U)}${SPREAD_TYPES.has(f.type) ? '<br><small>× ' + fmtHeight(f.spread || defaultSpread(f.type, f.height), U) + '</small>' : ''}</td><td class="mono">${rel ? (rel.rounded < 1 ? 'bounce' : rel.rounded + (rel.kind === 'bend' ? ' bend' : ' str')) + '<br><small>' + fmtDist(rel.d, U) + '</small>' : ''}</td></tr>`; }).join('')}</tbody></table>
-    ${c.notes ? `<div class="rv-notes"><b>Notes</b><br>${esc(c.notes)}</div>` : ''}<footer class="rv-foot">${esc(c.footer || (settings.facility || '') + ' · Course Designer')}${c.designer ? ' · Course designer: ' + esc(c.designer) : ''}</footer></div>`;
+    ${c.notes ? `<div class="rv-notes"><b>Notes</b><br>${esc(c.notes)}</div>` : ''}<footer class="rv-foot">${esc(c.footer || (settings.facility || '') + ' · ' + APP_NAME)}${c.designer ? ' · Course designer: ' + esc(c.designer) : ''}<br><small>${APP_NAME} — ${APP_CREDIT}</small></footer></div>`;
 }
 function riderBindZoom(root) {
   let zoom = 1; const plan = $('#rvPlan', root); if (!plan) return; const svg = $('svg', plan); const apply = () => { svg.style.width = (100 * zoom) + '%'; svg.style.height = 'auto'; };
@@ -1463,9 +1523,9 @@ function riderBindZoom(root) {
 }
 function riderListHTML(courses, settings, opts = {}) {
   const byDate = {}; courses.forEach(c => (byDate[c.date || 'Undated'] = byDate[c.date || 'Undated'] || []).push(c));
-  return `<div class="rv-wrap"><header class="rv-head"><div><div class="rv-fac">${esc(settings.facility || '')}</div><h1>Courses</h1><div class="rv-sub">Tap a class to open its course plan</div></div>${opts.designerButton ? '<button class="btn sm" id="rvDesigner">Open designer</button>' : ''}</header>
+  return `<div class="rv-wrap"><header class="rv-head"><div>${settings.branding && settings.branding.logo ? `<img class="rv-logo" src="${settings.branding.logo}" alt="">` : ''}<div class="rv-fac">${esc(settings.facility || '')}</div><h1>Courses</h1><div class="rv-sub">Tap a class to open its course plan</div></div>${opts.designerButton ? '<button class="btn sm" id="rvDesigner">Open designer</button>' : ''}</header>
     ${courses.length ? Object.entries(byDate).map(([d, cs]) => `<h3 class="rv-date">${esc(d === 'Undated' ? d : fmtDate(d))}</h3><div class="rv-list">${cs.map(c => { const ring = c._ring; const lvl = (LEVELS[c.disc] || []).find(l => l.id === c.levelId); return `<button class="rv-item" data-id="${c.id}"><span class="rv-order">${esc(c.showOrder || '')}</span><span><b>${esc(c.name)}</b><br><small>${[c.className, (DISCIPLINES[c.disc]?.label || '') + (lvl ? ' · ' + lvl.label : ''), fmtHeight(c.height, courseUnits(c)), ring ? ring.name : '', c.time ? (fmtDate(c.date, c.time).split(' · ')[1] || '') : ''].filter(Boolean).map(esc).join(' · ')}</small></span><span class="rv-chev">›</span></button>`; }).join('')}</div>`).join('') : '<div class="empty">No courses are published yet.</div>'}
-    <footer class="rv-foot">${esc(settings.facility || '')} · Course Designer</footer></div>`;
+    <footer class="rv-foot">${esc(settings.facility || '')} · ${APP_NAME}<br><small>${APP_NAME} — ${APP_CREDIT}</small></footer></div>`;
 }
 
 // ---------- Share payload: everything a rider page needs, compressed into the URL hash ----------
@@ -1567,7 +1627,7 @@ const GH = {
 
   async whoami(token) { const r = await this.api('/user', { token }); return r.json; },
   async repoInfo() { const c = this.cfg(); const r = await this.api(`/repos/${c.owner}/${c.repo}`); return r.status === 404 ? null : r.json; },
-  async createRepo(name, token) { const r = await this.api('/user/repos', { method: 'POST', token, body: JSON.stringify({ name, description: 'Meadow Creek course plans — built with the Course Designer', auto_init: true, has_issues: false, has_wiki: false, has_projects: false }) }); return r.json; },
+  async createRepo(name, token) { const r = await this.api('/user/repos', { method: 'POST', token, body: JSON.stringify({ name, description: 'Course plans — built with Ringcraft', auto_init: true, has_issues: false, has_wiki: false, has_projects: false }) }); return r.json; },
   async enablePages() {
     const c = this.cfg();
     try { const r = await this.api(`/repos/${c.owner}/${c.repo}/pages`); if (r.status !== 404 && r.json) return r.json; } catch (e) {}
@@ -1590,7 +1650,8 @@ function siteBase() {
 function boardContent() {
   const pub = App.data.courses.filter(c => c.published)
     .sort((a, b) => (a.date || '').localeCompare(b.date || '') || (a.showOrder || '').localeCompare(b.showOrder || '', undefined, { numeric: true }));
-  return JSON.stringify({ v: 2, fac: App.data.settings.facility || '', updated: Date.now(), courses: pub.map(c => SharePayload.pack(c, App.ringOf(c), App.data.settings)) });
+  const br = App.data.settings.branding || {};
+  return JSON.stringify({ v: 2, fac: App.data.settings.facility || '', brand: (br.logo || br.accent) ? { logo: br.logo || '', accent: br.accent || '' } : undefined, updated: Date.now(), courses: pub.map(c => SharePayload.pack(c, App.ringOf(c), App.data.settings)) });
 }
 const BUILD = 'web';
 const RIDER_PAGE_B64 = '';
@@ -1612,9 +1673,34 @@ function restore(json) { const c = JSON.parse(json); const i = App.data.courses.
 // ---------- Top-level render ----------
 function renderAll() { renderCourseList(); renderInventory(); renderRings(); renderLayouts(); renderSettings(); renderCanvas(); renderInspector(); renderTopbar(); }
 
+// ---------- Branding ----------
+function hexMix(hex, hex2, t) { // blend hex toward hex2 by t (0..1)
+  const p = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const a = p(hex), b = p(hex2);
+  return '#' + a.map((v, i) => Math.round(v + (b[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}
+function applyBrand() {
+  const s = App.data.settings; const b = s.branding || {};
+  const logoEl = $('#brandLogo'), markEl = $('#brandMark');
+  if (logoEl) { logoEl.src = b.logo || ''; logoEl.style.display = b.logo ? '' : 'none'; }
+  if (markEl) markEl.style.display = b.logo ? 'none' : '';
+  const nameEl = $('#brandName'); if (nameEl) nameEl.textContent = s.facility || APP_NAME;
+  const subEl = $('#brandSub'); if (subEl) subEl.textContent = s.facility ? APP_NAME : 'Course designer';
+  const root = document.documentElement;
+  const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && root.dataset.theme !== 'light';
+  if (b.accent && /^#[0-9a-fA-F]{6}$/.test(b.accent)) {
+    const acc = dark ? hexMix(b.accent, '#FFFFFF', 0.38) : b.accent;
+    const soft = dark ? hexMix(b.accent, '#141916', 0.6) : hexMix(b.accent, '#FFFFFF', 0.84);
+    root.style.setProperty('--accent', acc); root.style.setProperty('--accent-soft', soft);
+    root.style.setProperty('--route', acc); root.style.setProperty('--ok', acc);
+    root.style.setProperty('--accent-ink', dark ? '#10201A' : '#FFFFFF');
+  } else { ['--accent', '--accent-soft', '--route', '--ok', '--accent-ink'].forEach(v => root.style.removeProperty(v)); }
+  if (!document.body.classList.contains('rider')) document.title = (s.facility ? s.facility + ' · ' : '') + APP_NAME;
+}
+
 function renderTopbar() {
   const c = App.course; const el = $('#courseName'); const meta = $('#courseMeta');
-  $('#brandName').textContent = App.data.settings.facility || 'Course Designer';
+  applyBrand();
   if (!c) { el.value = ''; el.disabled = true; meta.innerHTML = ''; return; }
   el.disabled = false; if (document.activeElement !== el) el.value = c.name;
   const ring = App.ringOf(c); const lvl = (LEVELS[c.disc] || []).find(l => l.id === c.levelId);
@@ -1692,6 +1778,12 @@ function renderSettings() {
   if (document.activeElement !== $('#setShareUrl')) $('#setShareUrl').value = s.shareUrl || ''; $('#setRiderFirst').checked = !!s.riderFirst;
   if (document.activeElement !== $('#setRiderPage')) $('#setRiderPage').value = s.riderPage || '';
   renderGhSettings();
+  const b = s.branding || {};
+  $('#brandPrev').innerHTML = b.logo ? `<img src="${b.logo}" alt="Logo">` : 'No logo';
+  $('#brandLogoClear').style.display = b.logo ? '' : 'none';
+  if (document.activeElement !== $('#brandAccent')) $('#brandAccent').value = (b.accent && /^#[0-9a-fA-F]{6}$/.test(b.accent)) ? b.accent : '#2E5A43';
+  $('#aboutVersion').textContent = APP_VERSION + ' · ' + (typeof BUILD !== 'undefined' && BUILD === 'web' ? 'website edition' : 'Claude page edition');
+  $('#btnFeature').href = featureMailto();
   if (!$('#setStride').options.length) $('#setStride').innerHTML = strideOptions();
   $('#setStride').value = String(s.stride || 12);
   $('#storageHint').textContent = Store.mode === 'github' ? 'Courses save straight to your GitHub site: they sync to any device where this app is connected with your token, and published courses go live for riders instantly.' : Store.mode === 'github-error' ? 'GitHub connection failed — check the token under Website. Changes are safe in this browser meanwhile.' : Store.mode === 'shared' ? 'Courses, rings and inventory are saved with this page and sync to every device (and anyone you share it with). A copy is also kept in this browser.' : Store.mode === 'readonly' ? 'This is a read-only view. Your changes stay in this browser only.' : 'Saved in this browser. Open the page on claude.ai to sync across devices.';
@@ -1982,10 +2074,12 @@ function printSheetHTML(c, variant) {
     ['Fences', `${activeFences(c).length}${c.fences.length > activeFences(c).length ? ` (+${c.fences.length - activeFences(c).length} standing, not jumped)` : ''}`],
   ].filter(Boolean);
   const subtitle = { rider: 'Course plan', crew: 'Jump crew sheet', judge: 'Judge’s sheet' }[variant];
-  return `<div class="ps v-${variant}">
+  const bLogo = (App.data.settings.branding || {}).logo; const bAcc = (App.data.settings.branding || {}).accent;
+  const accStyle = bAcc && /^#[0-9a-fA-F]{6}$/.test(bAcc) ? ` style="--accent:${bAcc};--route:${bAcc}"` : '';
+  return `<div class="ps v-${variant}"${accStyle}>
     <div class="ps-head"><div><h1>${esc(c.name)}</h1><div class="sub">${[c.className, DISCIPLINES[c.disc].label + (lvl ? ' · ' + lvl.label : ''), fmtHeightBoth(c.height)].filter(Boolean).map(esc).join(' &nbsp;·&nbsp; ')}</div>
       ${c.event || c.timing || c.date ? `<div class="event">${c.event ? `<span><b>${esc(c.event)}</b></span>` : ''}${c.date ? `<span>${esc(fmtDate(c.date, c.time))}</span>` : ''}${c.timing ? `<span>${esc(c.timing)}</span>` : ''}</div>` : ''}</div>
-      <div class="facility"><small>${subtitle}</small>${esc(App.data.settings.facility || '')}${c.showOrder ? `<br><span class="order">Class ${esc(c.showOrder)}</span>` : ''}</div>${variant === 'rider' && riderUrlCached(c) ? `<div class="ps-qr">${QR.svg(riderUrlCached(c), 76, 'L')}<small>scan for phone view</small></div>` : ''}</div>
+      ${bLogo ? `<div class="ps-logo"><img src="${bLogo}" alt=""></div>` : ''}<div class="facility"><small>${subtitle}</small>${esc(App.data.settings.facility || '')}${c.showOrder ? `<br><span class="order">Class ${esc(c.showOrder)}</span>` : ''}</div>${variant === 'rider' && riderUrlCached(c) ? `<div class="ps-qr">${QR.svg(riderUrlCached(c), 76, 'L')}<small>scan for phone view</small></div>` : ''}</div>
     <div class="ps-body"><div class="ps-plan">${renderPlanSVG(c, ring, App.data.inventory, planOpts)}</div>
       <div class="ps-side${variant === 'crew' ? ' crew' : ''}">
         <div>${twoCol ? `<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.14in;align-items:start">${table(rows.slice(0, half))}${table(rows.slice(half))}</div>` : table(rows)}
@@ -1995,7 +2089,7 @@ function printSheetHTML(c, variant) {
           <div class="ps-notes"><span class="lbl">${variant === 'judge' ? 'Faults / notes' : 'Notes'}</span>${variant === 'judge' ? '' : esc(c.notes || '')}</div>
         </div>
       </div></div>
-    <div class="ps-foot"><span>${esc(c.footer || (App.data.settings.facility || '') + ' · Course Designer')}</span><span>${variant === 'crew' ? 'Heights as set for this class · poles in feet' : 'Distances measured fence to fence · ' + fmtStride(c.stride, U) + ' stride'} · printed ${new Date().toLocaleDateString()}</span></div>
+    <div class="ps-foot"><span>${esc(c.footer || (App.data.settings.facility || '') + ' · ' + APP_NAME)}</span><span>${APP_NAME} · A RippleStone Production</span><span>${variant === 'crew' ? 'Heights as set for this class · poles in feet' : 'Distances measured fence to fence · ' + fmtStride(c.stride, U) + ' stride'} · printed ${new Date().toLocaleDateString()}</span></div>
   </div>`;
 }
 function printTargets() {
@@ -2241,6 +2335,29 @@ function wire() {
   $('#ringCancel').addEventListener('click', resetRingForm);
   $('#invAdd').addEventListener('click', () => { const type = $('#invType').value; const name = $('#invName').value.trim() || JUMP_TYPES[type].label; App.data.inventory.push({ id: uid(), type, name, qty: Math.max(1, +$('#invQty').value || 1), maxH: parseHeight($('#invMax').value) || null, width: +$('#invWidth').value || 12, color: $('#invColor').value.trim() }); $('#invName').value = ''; $('#invMax').value = ''; $('#invColor').value = ''; $('#invQty').value = 1; commit(); });
   $('#setFacility').addEventListener('change', e => { App.data.settings.facility = e.target.value.trim(); commit(); });
+  $('#brandLogoFile').addEventListener('change', e => {
+    const file = e.target.files[0]; if (!file) return;
+    const rd = new FileReader();
+    rd.onload = () => { const img = new Image(); img.onload = () => {
+      const max = 360, sc = Math.min(1, max / Math.max(img.width, img.height));
+      const cv = document.createElement('canvas'); cv.width = Math.round(img.width * sc); cv.height = Math.round(img.height * sc);
+      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+      const uri = cv.toDataURL('image/png');
+      if (uri.length > 250000) { toast('That image is too large — try a smaller or simpler logo'); return; }
+      App.data.settings.branding = App.data.settings.branding || {}; App.data.settings.branding.logo = uri;
+      e.target.value = ''; commit(); toast('Logo updated');
+    }; img.onerror = () => toast('Could not read that image'); img.src = rd.result; };
+    rd.readAsDataURL(file);
+  });
+  $('#brandLogoClear').addEventListener('click', () => { if (App.data.settings.branding) App.data.settings.branding.logo = ''; commit(); });
+  $('#brandAccent').addEventListener('change', e => { App.data.settings.branding = App.data.settings.branding || {}; App.data.settings.branding.accent = e.target.value; commit(); });
+  $('#brandAccentReset').addEventListener('click', () => { if (App.data.settings.branding) App.data.settings.branding.accent = ''; commit(); toast('Back to hunter green'); });
+  const openHelp = () => { $('#helpVersion').textContent = APP_VERSION; $('#btnFeature2').href = featureMailto(); $('#modalHelp').classList.add('open'); };
+  $('#btnHelp').addEventListener('click', openHelp);
+  $('#btnHelp2').addEventListener('click', openHelp);
+  $('#helpClose').addEventListener('click', () => $('#modalHelp').classList.remove('open'));
+  $('#modalHelp').addEventListener('click', e => { if (e.target.id === 'modalHelp') e.currentTarget.classList.remove('open'); });
+  if (window.matchMedia) { try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyBrand); } catch (err) {} }
   $('#setStride').addEventListener('change', e => { App.data.settings.stride = +e.target.value; commit(); });
   $('#setShareUrl').addEventListener('change', e => { App.data.settings.shareUrl = e.target.value.trim(); commit(); });
   $('#setRiderPage').addEventListener('change', e => { let v = e.target.value.trim(); if (v && !/^https?:\/\//.test(v)) v = 'https://' + v; App.data.settings.riderPage = v; e.target.value = v; Object.keys(riderUrlCache).forEach(k => delete riderUrlCache[k]); commit(); });
@@ -2251,7 +2368,7 @@ function wire() {
   $('#setRiderFirst').addEventListener('change', e => { App.data.settings.riderFirst = e.target.checked; commit(); });
   $('#btnRiders').addEventListener('click', () => riderBoard());
   $('#btnExport').addEventListener('click', async () => { const json = JSON.stringify(App.data, null, 2); const fn = 'course-designer-backup.json'; if (Store.downloadsNs) { try { await Store.downloadsNs.save({ filename: fn, data: json }); } catch (e) {} } else { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' })); a.download = fn; a.click(); } });
-  $('#importFile').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { const d = JSON.parse(await f.text()); if (!d.courses || !d.rings) throw 0; Store.data = d; App.courseId = d.courses[0]?.id || null; commit(); toast('Backup imported'); } catch { toast('That file is not a Course Designer backup'); } e.target.value = ''; });
+  $('#importFile').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { const d = JSON.parse(await f.text()); if (!d.courses || !d.rings) throw 0; Store.data = d; App.courseId = d.courses[0]?.id || null; commit(); toast('Backup imported'); } catch { toast('That file is not a Ringcraft backup'); } e.target.value = ''; });
   $('#btnReset').addEventListener('click', () => askConfirm('Reset everything?', 'Rings, inventory and ALL saved courses go back to the defaults. Export a backup first if you want to keep them.', 'Reset', () => { Store.data = defaultData(); App.courseId = null; commit(); }));
   document.addEventListener('keydown', e => {
     const tag = document.activeElement?.tagName; const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
