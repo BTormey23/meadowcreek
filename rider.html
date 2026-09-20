@@ -50,6 +50,15 @@ h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;font-weight:
 .topbar{display:flex;align-items:center;gap:16px;padding:10px 18px;background:var(--paper);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand svg{width:30px;height:30px;color:var(--accent)}
+.brand-logo{height:38px;max-width:120px;object-fit:contain;border-radius:4px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand-logo,:root:not([data-theme="light"]) .brand-prev{background:#FBFAF6;padding:2px 4px}}
+.brand-prev{width:64px;height:64px;border:1px dashed var(--line-2);border-radius:6px;display:flex;align-items:center;justify-content:center;flex:none;color:var(--ink-3);font-size:11px;overflow:hidden}
+.brand-prev img{max-width:100%;max-height:100%;object-fit:contain}
+.help-body{display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
+.help-body details{border:1px solid var(--line);border-radius:var(--radius);padding:0}
+.help-body summary{cursor:pointer;font-weight:600;padding:9px 12px;font-family:var(--font-display)}
+.help-body details[open]{background:var(--paper-2)}
+.help-body p{margin:0;padding:0 12px 11px;color:var(--ink-2);font-size:13px;line-height:1.5}
 .brand .name{font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:.01em}
 .brand .sub{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;display:block;margin-top:-2px}
 .topbar .course-title{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start}
@@ -246,6 +255,8 @@ body.rider #riderview{display:block}
 .rv-wrap{max-width:900px;margin:0 auto;padding:14px 14px 40px;display:flex;flex-direction:column;gap:12px}
 .rv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:8px}
 .rv-fac{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.rv-logo{height:44px;max-width:140px;object-fit:contain;display:block;margin-bottom:4px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .rv-logo{background:#FBFAF6;border-radius:4px;padding:2px 4px}}
 .rv-head h1{font-size:22px}
 .rv-sub{font-size:13px;color:var(--ink-2);margin-top:2px}
 .rv-head .order{border:1.5px solid var(--ink);border-radius:4px;padding:3px 9px;font-family:var(--font-mono);font-weight:600;white-space:nowrap}
@@ -292,7 +303,8 @@ table.ledger tr.over td{color:var(--rail)}
 .ps{--footing:#F1EDE3;--footing-grid:#DCD5C5;--rail-line:#5B5246;--paper:#fff;--ink:#111;--ink-2:#444;--ink-3:#777;--accent:#2E5A43;--bay:#8B5A2B;--route:#2E5A43;--route-jo:#B5422F;--line:#CFC9BC;--rail:#B5422F;color:#111}
 .ps{width:7.5in;height:10in;display:grid;grid-template-rows:auto 1fr auto;gap:.1in;page-break-after:always;border:.6pt solid #8E877A;padding:.16in .18in;box-sizing:border-box;background:#fff;position:relative;overflow:hidden}
 .ps::after{content:"";position:absolute;inset:3pt;border:.3pt solid #CFC9BC;pointer-events:none}
-.ps-head{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:end;border-bottom:1.5px solid #1E2A22;padding-bottom:.06in;gap:.2in}
+.ps-head{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:end;border-bottom:1.5px solid #1E2A22;padding-bottom:.06in;gap:.18in}
+.ps-logo img{height:.62in;max-width:1.2in;object-fit:contain;display:block}
 .ps-head h1{font-size:20pt;font-family:var(--font-display);line-height:1.1}
 .ps-head .sub{font-size:10pt;color:#444;margin-top:2px}
 .ps-head .event{font-size:9pt;color:#1E2A22;margin-top:3px;display:flex;gap:.14in;flex-wrap:wrap}
@@ -371,6 +383,19 @@ const JUMP_TYPES = {
   crossrail: { label: 'Cross rail',   short: 'X'  },
 };
 const SPREAD_TYPES = new Set(['oxer', 'swedish', 'triple', 'liverpool']);
+
+// ---------- Product identity ----------
+const APP_NAME = 'Ringcraft';
+const APP_VERSION = 'v14';
+const APP_CREDIT = 'A RippleStone Production by Brian Tormey';
+const FEEDBACK_EMAIL = 'brian@briantormey.com';
+const branding = () => (typeof App !== 'undefined' && App.data && App.data.settings && App.data.settings.branding) || { logo: '', accent: '' };
+function featureMailto() {
+  const fac = (typeof App !== 'undefined' && App.data && App.data.settings && App.data.settings.facility) || '';
+  const subject = APP_NAME + ' feature request' + (fac ? ' — ' + fac : '');
+  const body = 'App: ' + APP_NAME + ' ' + APP_VERSION + ' (' + (typeof BUILD !== 'undefined' ? BUILD : '?') + ' build)\n\nMy idea:\n';
+  return 'mailto:' + FEEDBACK_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+}
 
 const DISCIPLINES = {
   hunter: { label: 'Hunter', units: 'imperial' },
@@ -577,7 +602,7 @@ function defaultData() {
   return {
     version: 1,
     updatedAt: Date.now(),
-    settings: { facility: 'Meadow Creek Farm', stride: 12, shareUrl: 'https://claude.ai/code/artifact/bb423942-eb62-4a3c-8c09-8508fbbaa882', riderFirst: false },
+    settings: { facility: 'Meadow Creek Farm', stride: 12, branding: { logo: '', accent: '' }, shareUrl: 'https://claude.ai/code/artifact/bb423942-eb62-4a3c-8c09-8508fbbaa882', riderFirst: false },
     rings: [
       { id: 'r-outdoor', name: 'Outdoor ring', L: 200, W: 100, units: 'ft', gate: 'S', footing: 'Sand / fiber' },
       { id: 'r-indoor', name: 'Indoor arena', L: 160, W: 80, units: 'ft', gate: 'W', footing: 'GGT' },
@@ -656,6 +681,7 @@ const Store = {
     }
     this.data = (remote && local) ? ((local.updatedAt || 0) > (remote.updatedAt || 0) ? local : remote) : (remote || local || defaultData());
     if (!this.data.settings) this.data.settings = { facility: 'Meadow Creek Farm', stride: 12 };
+    if (!this.data.settings.branding) this.data.settings.branding = { logo: '', accent: '' };
     if (!this.data.layouts) this.data.layouts = [];
     if (!this.isWeb()) {
       try {
@@ -1130,12 +1156,12 @@ function renderPlanSVG(course, ring, inventory, opts = {}) {
    ============================================================ */
 function riderCourseHTML(c, ring, settings, opts = {}) {
   const nums = numberFences(c); const U = courseUnits(c); const st = courseStats(c, ring); const lvl = (LEVELS[c.disc] || []).find(l => l.id === c.levelId);
-  return `<div class="rv-wrap"><header class="rv-head"><div>${opts.back ? '<button class="btn sm" id="rvBack" style="margin-bottom:6px">‹ All courses</button><br>' : ''}<div class="rv-fac">${esc(settings.facility || '')}</div><h1>${esc(c.name)}</h1><div class="rv-sub">${[c.className, (DISCIPLINES[c.disc]?.label || '') + (lvl ? ' · ' + lvl.label : ''), fmtHeight(c.height, U), c.event, fmtDate(c.date, c.time), c.timing].filter(Boolean).map(esc).join(' · ')}</div></div>${c.showOrder ? `<div class="order">Class ${esc(c.showOrder)}</div>` : ''}</header>
+  return `<div class="rv-wrap"><header class="rv-head"><div>${opts.back ? '<button class="btn sm" id="rvBack" style="margin-bottom:6px">‹ All courses</button><br>' : ''}${settings.branding && settings.branding.logo ? `<img class="rv-logo" src="${settings.branding.logo}" alt="">` : ''}<div class="rv-fac">${esc(settings.facility || '')}</div><h1>${esc(c.name)}</h1><div class="rv-sub">${[c.className, (DISCIPLINES[c.disc]?.label || '') + (lvl ? ' · ' + lvl.label : ''), fmtHeight(c.height, U), c.event, fmtDate(c.date, c.time), c.timing].filter(Boolean).map(esc).join(' · ')}</div></div>${c.showOrder ? `<div class="order">Class ${esc(c.showOrder)}</div>` : ''}</header>
     <div class="rv-plan" id="rvPlan">${renderPlanSVG(c, ring, [], { route: true, dist: true, grid: true, jo: true, unused: false })}</div>
     <div class="rv-zoom"><button class="btn sm" id="rvOut">−</button><span class="hint">pinch or use buttons to zoom</span><button class="btn sm" id="rvIn">+</button><button class="btn sm" id="rvFit">Fit</button></div>
     <div class="rv-stats">${st ? `<span class="chip">${isMetric(U) ? Math.round(st.lengthM) + ' m' : Math.round(st.lengthFt) + "'"} track</span>` : ''}${st && st.timeAllowed ? `<span class="chip">TA ${fmtSecs(st.timeAllowed)} · limit ${fmtSecs(st.timeLimit)}</span>` : ''}<span class="chip">${fmtStride(c.stride, U)} stride</span>${c.disc === 'jumper' && nums.some(n => n.fence.jo) ? `<span class="chip bad">Jump-off: ${nums.filter(n => n.fence.jo).map(n => n.label).join(' – ')}</span>` : ''}</div>
     <table class="rv-table"><thead><tr><th>#</th><th>Jump</th><th>Height</th><th>To next</th></tr></thead><tbody>${nums.map(({ label, fence: f, idx }) => { const nx = c.fences[idx + 1]; const rel = nx && isActive(nx) ? relatedDistance(f, nx, c.stride) : null; return `<tr><td class="n">${label}</td><td>${esc(f.name)}<br><small>${JUMP_TYPES[f.type]?.label}${f.trot ? ' · trot' : ''}${f.note ? ' — ' + esc(f.note) : ''}</small></td><td class="mono">${fmtHeight(f.height, U)}${SPREAD_TYPES.has(f.type) ? '<br><small>× ' + fmtHeight(f.spread || defaultSpread(f.type, f.height), U) + '</small>' : ''}</td><td class="mono">${rel ? (rel.rounded < 1 ? 'bounce' : rel.rounded + (rel.kind === 'bend' ? ' bend' : ' str')) + '<br><small>' + fmtDist(rel.d, U) + '</small>' : ''}</td></tr>`; }).join('')}</tbody></table>
-    ${c.notes ? `<div class="rv-notes"><b>Notes</b><br>${esc(c.notes)}</div>` : ''}<footer class="rv-foot">${esc(c.footer || (settings.facility || '') + ' · Course Designer')}${c.designer ? ' · Course designer: ' + esc(c.designer) : ''}</footer></div>`;
+    ${c.notes ? `<div class="rv-notes"><b>Notes</b><br>${esc(c.notes)}</div>` : ''}<footer class="rv-foot">${esc(c.footer || (settings.facility || '') + ' · ' + APP_NAME)}${c.designer ? ' · Course designer: ' + esc(c.designer) : ''}<br><small>${APP_NAME} — ${APP_CREDIT}</small></footer></div>`;
 }
 function riderBindZoom(root) {
   let zoom = 1; const plan = $('#rvPlan', root); if (!plan) return; const svg = $('svg', plan); const apply = () => { svg.style.width = (100 * zoom) + '%'; svg.style.height = 'auto'; };
@@ -1144,9 +1170,9 @@ function riderBindZoom(root) {
 }
 function riderListHTML(courses, settings, opts = {}) {
   const byDate = {}; courses.forEach(c => (byDate[c.date || 'Undated'] = byDate[c.date || 'Undated'] || []).push(c));
-  return `<div class="rv-wrap"><header class="rv-head"><div><div class="rv-fac">${esc(settings.facility || '')}</div><h1>Courses</h1><div class="rv-sub">Tap a class to open its course plan</div></div>${opts.designerButton ? '<button class="btn sm" id="rvDesigner">Open designer</button>' : ''}</header>
+  return `<div class="rv-wrap"><header class="rv-head"><div>${settings.branding && settings.branding.logo ? `<img class="rv-logo" src="${settings.branding.logo}" alt="">` : ''}<div class="rv-fac">${esc(settings.facility || '')}</div><h1>Courses</h1><div class="rv-sub">Tap a class to open its course plan</div></div>${opts.designerButton ? '<button class="btn sm" id="rvDesigner">Open designer</button>' : ''}</header>
     ${courses.length ? Object.entries(byDate).map(([d, cs]) => `<h3 class="rv-date">${esc(d === 'Undated' ? d : fmtDate(d))}</h3><div class="rv-list">${cs.map(c => { const ring = c._ring; const lvl = (LEVELS[c.disc] || []).find(l => l.id === c.levelId); return `<button class="rv-item" data-id="${c.id}"><span class="rv-order">${esc(c.showOrder || '')}</span><span><b>${esc(c.name)}</b><br><small>${[c.className, (DISCIPLINES[c.disc]?.label || '') + (lvl ? ' · ' + lvl.label : ''), fmtHeight(c.height, courseUnits(c)), ring ? ring.name : '', c.time ? (fmtDate(c.date, c.time).split(' · ')[1] || '') : ''].filter(Boolean).map(esc).join(' · ')}</small></span><span class="rv-chev">›</span></button>`; }).join('')}</div>`).join('') : '<div class="empty">No courses are published yet.</div>'}
-    <footer class="rv-foot">${esc(settings.facility || '')} · Course Designer</footer></div>`;
+    <footer class="rv-foot">${esc(settings.facility || '')} · ${APP_NAME}<br><small>${APP_NAME} — ${APP_CREDIT}</small></footer></div>`;
 }
 
 // ---------- Share payload: everything a rider page needs, compressed into the URL hash ----------
@@ -1204,8 +1230,9 @@ function showError(title, text) { document.getElementById('riderview').innerHTML
 (async function main() {
   document.body.classList.add('rider');
   const root = document.getElementById('riderview');
-  const open = (entry, back) => { const { course, ring, settings } = entry; root.innerHTML = riderCourseHTML(course, ring, settings, { back }); riderBindZoom(root); document.title = course.name + ' · course plan'; const b = root.querySelector('#rvBack'); if (b) b.onclick = () => board(entry._list || []); window.scrollTo(0, 0); };
-  const board = list => { const settings = list.length ? list[0].settings : { facility: '' }; const cs = list.map(e => Object.assign({}, e.course, { _ring: e.ring })); root.innerHTML = riderListHTML(cs, settings); root.querySelectorAll('.rv-item').forEach(b => b.onclick = () => open(list.find(e => e.course.id === b.dataset.id), true)); document.title = (settings.facility || 'Courses') + ' · courses'; };
+  const tint = st => { const a = st && st.branding && st.branding.accent; if (a && /^#[0-9a-fA-F]{6}$/.test(a)) { document.documentElement.style.setProperty('--accent', a); document.documentElement.style.setProperty('--route', a); } };
+  const open = (entry, back) => { const { course, ring, settings } = entry; tint(settings); root.innerHTML = riderCourseHTML(course, ring, settings, { back }); riderBindZoom(root); document.title = course.name + ' · course plan'; const b = root.querySelector('#rvBack'); if (b) b.onclick = () => board(entry._list || []); window.scrollTo(0, 0); };
+  const board = list => { const settings = list.length ? list[0].settings : { facility: '' }; tint(settings); const cs = list.map(e => Object.assign({}, e.course, { _ring: e.ring })); root.innerHTML = riderListHTML(cs, settings); root.querySelectorAll('.rv-item').forEach(b => b.onclick = () => open(list.find(e => e.course.id === b.dataset.id), true)); document.title = (settings.facility || 'Courses') + ' · courses'; };
   const withList = list => { list.forEach(e => e._list = list); return list; };
   const h = decodeURIComponent(location.hash || '').replace(/^#/, '');
   const pm = h.match(/^(c|b)=([A-Za-z0-9_\-]+)$/);
@@ -1220,7 +1247,7 @@ function showError(title, text) { document.getElementById('riderview').innerHTML
     let bd = null;
     try { const r = await fetch('board.json?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) bd = await r.json(); } catch (e) {}
     if (!bd) { showError('No courses here yet', location.protocol === 'file:' ? 'This page reads board.json from the website it is hosted on. Open it from your site, or use a link that carries the course inside it.' : 'The rider board has not been published yet — check back soon.'); return; }
-    const list = withList((bd.courses || []).map(p => { const e = SharePayload.unpack(p); if (!e.settings.facility && bd.fac) e.settings.facility = bd.fac; return e; }));
+    const list = withList((bd.courses || []).map(p => { const e = SharePayload.unpack(p); if (!e.settings.facility && bd.fac) e.settings.facility = bd.fac; if (bd.brand) e.settings.branding = bd.brand; return e; }));
     if (!h || h === 'riders') { board(list); return; }
     const hit = list.find(e => e.course.id === h);
     if (hit) open(hit, list.length > 1);
