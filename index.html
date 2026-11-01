@@ -1,9 +1,20 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Ringcraft — Course Designer</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RingCraft — Course Designer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2E5A43" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1C2320" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232E5A43'/%3E%3Cpath d='M 83.26,59.07 A 34,34 0 1 0 60.51,84.34' fill='none' stroke='%23A8D4BA' stroke-width='6'/%3E%3Cg stroke='%23FFFFFF' fill='none'%3E%3Cline x1='40' y1='35' x2='40' y2='68' stroke-width='8.5'/%3E%3Cpath d='M40,39.5 H51.5 A9.75,9.75 0 0 1 51.5,59 H40' stroke-width='8.5'/%3E%3Cline x1='45' y1='59' x2='81' y2='79.6' stroke-width='8.5'/%3E%3C/g%3E%3C/svg%3E">
+<script>if(/app\.html$/.test(location.pathname)){const l=document.querySelector('link[rel=manifest]');if(l)l.href="app.webmanifest"}</script>
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="RingCraft">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
+@media (display-mode: standalone){.topbar{padding-top:calc(10px + env(safe-area-inset-top))}body.rider .rv-wrap{padding-top:calc(14px + env(safe-area-inset-top))}body{padding-bottom:env(safe-area-inset-bottom)}}
 :root{
   --ground:#ECE7DB; --paper:#FBFAF6; --paper-2:#F3F0E8; --line:#D8D2C4; --line-2:#C4BDAD;
   --ink:#1E2A22; --ink-2:#4E5A52; --ink-3:#7D877F;
@@ -47,6 +58,10 @@ h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;font-weight:
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ---------- App shell ---------- */
+.demo-bar{background:var(--accent);color:var(--accent-ink);font-size:13px;padding:7px 14px;text-align:center}
+.demo-bar a{color:inherit;font-weight:600}
+.upd-card{border:1px solid var(--line);border-radius:6px;padding:9px 11px;background:var(--paper-2);color:var(--ink-2)}
+.upd-card b{color:var(--ink)}
 #app{display:grid;grid-template-rows:auto 1fr;height:100vh;min-height:0}
 .topbar{display:flex;align-items:center;gap:16px;padding:10px 18px;background:var(--paper);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px}
@@ -356,8 +371,8 @@ table.ledger tr.over td{color:var(--rail)}
   <header class="topbar">
     <div class="brand">
       <img id="brandLogo" class="brand-logo" alt="" style="display:none">
-      <svg id="brandMark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 24h24"/><path d="M8 24V12M24 24V12"/><path d="M8 15h16M8 19h16"/><path d="M6 12l2-4 2 4M22 12l2-4 2 4"/></svg>
-      <div><span class="name" id="brandName">Meadow Creek</span><span class="sub" id="brandSub">Ringcraft</span></div>
+      <svg id="brandMark" viewBox="0 0 100 100" aria-hidden="true"><path d="M 83.26,59.07 A 34,34 0 1 0 60.51,84.34" fill="none" stroke="var(--ink)" stroke-width="4.6"/><line x1="79.84" y1="58.34" x2="86.68" y2="59.80" stroke="var(--ink)" stroke-width="4"/><line x1="59.43" y1="81.01" x2="61.59" y2="87.67" stroke="var(--ink)" stroke-width="4"/><g stroke="var(--accent)" fill="none"><line x1="40" y1="35" x2="40" y2="68" stroke-width="6.4"/><path d="M40,39.5 H51.5 A9.75,9.75 0 0 1 51.5,59 H40" stroke-width="6.4"/><line x1="45" y1="59" x2="81" y2="79.6" stroke-width="6.4"/></g></svg>
+      <div><span class="name" id="brandName">RingCraft</span><span class="sub" id="brandSub">RingCraft</span></div>
     </div>
     <div class="course-title">
       <input id="courseName" type="text" placeholder="Untitled course" aria-label="Course name">
@@ -464,7 +479,7 @@ table.ledger tr.over td{color:var(--rail)}
           <div class="field"><label>GitHub access token</label><input id="ghToken" type="password" placeholder="ghp_… or github_pat_…" autocomplete="off"><span class="hint">Stays in this browser only — it is never stored with the course data.</span></div>
           <div class="row">
             <div class="field"><label>Account (optional)</label><input id="ghOwner" type="text" placeholder="auto-detect"></div>
-            <div class="field"><label>Repository</label><input id="ghRepo" type="text" placeholder="meadow-creek-courses"></div>
+            <div class="field"><label>Repository</label><input id="ghRepo" type="text" placeholder="your-site-name"></div>
           </div>
           <div class="row" style="align-items:center;gap:8px"><button class="btn primary sm" id="ghConnect">Connect</button><button class="btn sm" id="ghDisconnect">Disconnect</button><span id="ghStatus"></span></div>
         </div>
@@ -488,8 +503,10 @@ table.ledger tr.over td{color:var(--rail)}
         </div>
         <hr class="divider">
         <h3>About</h3>
-        <p class="hint" style="margin:0 0 8px"><b>Ringcraft</b> <span id="aboutVersion"></span><br>A RippleStone Production by Brian Tormey</p>
-        <div class="row" style="flex-wrap:wrap"><a class="btn sm" id="btnFeature" href="#">Suggest a feature ✉</a><button class="btn sm" id="btnHelp2">Open the guide</button></div>
+        <p class="hint" style="margin:0 0 8px"><b>RingCraft</b> <span id="aboutVersion"></span><br>A RippleStone Production by Brian Tormey</p>
+        <p class="hint" style="margin:0 0 8px">Use it like an app: open this site in Safari or Chrome on your phone or iPad, then Share → <b>Add to Home Screen</b>. You get a RingCraft icon, full-screen launch, and the rider board works even with spotty barn cell service.</p>
+        <div class="row" style="flex-wrap:wrap"><a class="btn sm" id="btnFeature" href="#">Suggest a feature ✉</a><button class="btn sm" id="btnHelp2">Open the guide</button><button class="btn sm" id="btnUpdCheck">Check for updates</button></div>
+        <div id="updBox" class="hint" style="margin-top:8px"></div>
       </div>
     </aside>
 
@@ -544,7 +561,7 @@ table.ledger tr.over td{color:var(--rail)}
       <div class="field"><label>Class</label><input id="nClass" type="text" placeholder="2'6&quot; Children's Hunter"></div>
     </div>
     <div class="row">
-      <div class="field"><label>Event / show</label><input id="nEvent" type="text" placeholder="Meadow Creek Schooling Show"></div>
+      <div class="field"><label>Event / show</label><input id="nEvent" type="text" placeholder="Spring Schooling Show"></div>
       <div class="field" style="max-width:120px"><label>Order of show #</label><input id="nOrder" type="text" placeholder="e.g. 12"></div>
       <div class="field"><label>Timing / scheduling note</label><input id="nTiming" type="text" placeholder="Ring 1 · not before 10:30 · follows class 11"></div>
     </div>
@@ -608,7 +625,7 @@ table.ledger tr.over td{color:var(--rail)}
   <div class="foot"><button class="btn" id="shCancel">Close</button></div></div></div>
 <div class="modal-bg" id="modalConfirm"><div class="modal small"><h2 id="cfTitle">Are you sure?</h2><p id="cfText"></p><div class="foot"><button class="btn" id="cfNo">Cancel</button><button class="btn danger" id="cfYes">Delete</button></div></div></div>
 <div class="modal-bg" id="modalHelp"><div class="modal" style="width:min(680px,100%)">
-  <h2>Ringcraft — quick guide</h2>
+  <h2>RingCraft — quick guide</h2>
   <p class="lead">Design stride-correct hunter, jumper and equitation courses; print show-ready plans; share live links and QR codes with riders.</p>
   <div class="help-body">
     <details open><summary>Design a course in 30 seconds</summary><p>Click <b>+ New course</b>, pick the ring, discipline and level, and choose a course type — the designer lays out a stride-correct track. Don't like it? <b>Regenerate</b> deals a fresh layout, <b>Mirror</b> flips it. Then adjust by hand: drag any fence to move it, use the round handle to rotate (or press <b>R</b> for 15° steps), arrow keys nudge. Distances between related fences update live, in strides.</p></details>
@@ -620,7 +637,7 @@ table.ledger tr.over td{color:var(--rail)}
     <details><summary>Your site, your data</summary><p>On your own website, every <b>Save</b> publishes automatically — same courses on every device you've connected in <b>Setup → Website</b>. The site and its course data are public to anyone with the address; your GitHub token is not — it stays in your browser, so never paste it anywhere except Setup. <b>Export backup</b> in Setup makes a file copy any time.</p></details>
     <details><summary>Make it yours</summary><p>In <b>Setup → Stable &amp; branding</b>, set your stable's name, upload your logo and pick an accent color — they flow to the app, printed plans and rider pages. Running this for another barn? A fresh install gives them their own site; they brand it themselves in the same place.</p></details>
   </div>
-  <div class="foot" style="justify-content:space-between;align-items:center"><span class="hint">Ringcraft <span id="helpVersion"></span> · A RippleStone Production by Brian Tormey</span><span style="display:flex;gap:8px"><a class="btn sm" id="btnFeature2" href="#">Suggest a feature ✉</a><button class="btn primary" id="helpClose">Close</button></span></div>
+  <div class="foot" style="justify-content:space-between;align-items:center"><span class="hint">RingCraft <span id="helpVersion"></span> · A RippleStone Production by Brian Tormey</span><span style="display:flex;gap:8px"><a class="btn sm" id="btnFeature2" href="#">Suggest a feature ✉</a><button class="btn primary" id="helpClose">Close</button></span></div>
 </div></div>
 <div class="toast" id="toast"></div>
 <div id="printsheet"></div>
@@ -660,8 +677,8 @@ const JUMP_TYPES = {
 const SPREAD_TYPES = new Set(['oxer', 'swedish', 'triple', 'liverpool']);
 
 // ---------- Product identity ----------
-const APP_NAME = 'Ringcraft';
-const APP_VERSION = 'v14';
+const APP_NAME = 'RingCraft';
+const APP_VERSION = 'v16';
 const APP_CREDIT = 'A RippleStone Production by Brian Tormey';
 const FEEDBACK_EMAIL = 'brian@briantormey.com';
 const branding = () => (typeof App !== 'undefined' && App.data && App.data.settings && App.data.settings.branding) || { logo: '', accent: '' };
@@ -877,7 +894,7 @@ function defaultData() {
   return {
     version: 1,
     updatedAt: Date.now(),
-    settings: { facility: 'Meadow Creek Farm', stride: 12, branding: { logo: '', accent: '' }, shareUrl: 'https://claude.ai/code/artifact/bb423942-eb62-4a3c-8c09-8508fbbaa882', riderFirst: false },
+    settings: { facility: '', stride: 12, branding: { logo: '', accent: '' }, shareUrl: '', riderFirst: false },
     rings: [
       { id: 'r-outdoor', name: 'Outdoor ring', L: 200, W: 100, units: 'ft', gate: 'S', footing: 'Sand / fiber' },
       { id: 'r-indoor', name: 'Indoor arena', L: 160, W: 80, units: 'ft', gate: 'W', footing: 'GGT' },
@@ -955,7 +972,7 @@ const Store = {
       try { const r = await fetch(DATA_PATH, { cache: 'no-store' }); if (r.ok) remote = await r.json(); } catch (e) {}
     }
     this.data = (remote && local) ? ((local.updatedAt || 0) > (remote.updatedAt || 0) ? local : remote) : (remote || local || defaultData());
-    if (!this.data.settings) this.data.settings = { facility: 'Meadow Creek Farm', stride: 12 };
+    if (!this.data.settings) this.data.settings = { facility: '', stride: 12 };
     if (!this.data.settings.branding) this.data.settings.branding = { logo: '', accent: '' };
     if (!this.data.layouts) this.data.layouts = [];
     if (!this.isWeb()) {
@@ -1610,8 +1627,9 @@ const GH = {
     return { text: this.b64decode(r.json.content), sha: r.json.sha };
   },
 
-  async putFile(path, text, message) {
-    const c = this.cfg(); const body = { message, content: this.b64encode(text), branch: c.branch || 'main' };
+  async putFile(path, text, message) { return this.putB64(path, this.b64encode(text), message); },
+  async putB64(path, b64, message) {
+    const c = this.cfg(); const body = { message, content: b64, branch: c.branch || 'main' };
     const attempt = async () => { if (this._shas[path]) body.sha = this._shas[path]; else delete body.sha;
       const r = await this.api(`/repos/${c.owner}/${c.repo}/contents/${encodeURIComponent(path).replace(/%2F/g, '/')}`, { method: 'PUT', body: JSON.stringify(body) });
       this._shas[path] = r.json.content.sha; return r; };
@@ -1627,7 +1645,7 @@ const GH = {
 
   async whoami(token) { const r = await this.api('/user', { token }); return r.json; },
   async repoInfo() { const c = this.cfg(); const r = await this.api(`/repos/${c.owner}/${c.repo}`); return r.status === 404 ? null : r.json; },
-  async createRepo(name, token) { const r = await this.api('/user/repos', { method: 'POST', token, body: JSON.stringify({ name, description: 'Course plans — built with Ringcraft', auto_init: true, has_issues: false, has_wiki: false, has_projects: false }) }); return r.json; },
+  async createRepo(name, token) { const r = await this.api('/user/repos', { method: 'POST', token, body: JSON.stringify({ name, description: 'Course plans — built with RingCraft', auto_init: true, has_issues: false, has_wiki: false, has_projects: false }) }); return r.json; },
   async enablePages() {
     const c = this.cfg();
     try { const r = await this.api(`/repos/${c.owner}/${c.repo}/pages`); if (r.status !== 404 && r.json) return r.json; } catch (e) {}
@@ -1685,7 +1703,7 @@ function applyBrand() {
   if (logoEl) { logoEl.src = b.logo || ''; logoEl.style.display = b.logo ? '' : 'none'; }
   if (markEl) markEl.style.display = b.logo ? 'none' : '';
   const nameEl = $('#brandName'); if (nameEl) nameEl.textContent = s.facility || APP_NAME;
-  const subEl = $('#brandSub'); if (subEl) subEl.textContent = s.facility ? APP_NAME : 'Course designer';
+  const subEl = $('#brandSub'); if (subEl) subEl.textContent = (s.facility && s.facility !== APP_NAME) ? APP_NAME : 'Course designer';
   const root = document.documentElement;
   const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && root.dataset.theme !== 'light';
   if (b.accent && /^#[0-9a-fA-F]{6}$/.test(b.accent)) {
@@ -1695,7 +1713,7 @@ function applyBrand() {
     root.style.setProperty('--route', acc); root.style.setProperty('--ok', acc);
     root.style.setProperty('--accent-ink', dark ? '#10201A' : '#FFFFFF');
   } else { ['--accent', '--accent-soft', '--route', '--ok', '--accent-ink'].forEach(v => root.style.removeProperty(v)); }
-  if (!document.body.classList.contains('rider')) document.title = (s.facility ? s.facility + ' · ' : '') + APP_NAME;
+  if (!document.body.classList.contains('rider')) document.title = (s.facility && s.facility !== APP_NAME ? s.facility + ' · ' : '') + APP_NAME;
 }
 
 function renderTopbar() {
@@ -1783,7 +1801,7 @@ function renderSettings() {
   $('#brandLogoClear').style.display = b.logo ? '' : 'none';
   if (document.activeElement !== $('#brandAccent')) $('#brandAccent').value = (b.accent && /^#[0-9a-fA-F]{6}$/.test(b.accent)) ? b.accent : '#2E5A43';
   $('#aboutVersion').textContent = APP_VERSION + ' · ' + (typeof BUILD !== 'undefined' && BUILD === 'web' ? 'website edition' : 'Claude page edition');
-  $('#btnFeature').href = featureMailto();
+  $('#btnFeature').href = featureMailto(); if (typeof demoBar === 'function') demoBar();
   if (!$('#setStride').options.length) $('#setStride').innerHTML = strideOptions();
   $('#setStride').value = String(s.stride || 12);
   $('#storageHint').textContent = Store.mode === 'github' ? 'Courses save straight to your GitHub site: they sync to any device where this app is connected with your token, and published courses go live for riders instantly.' : Store.mode === 'github-error' ? 'GitHub connection failed — check the token under Website. Changes are safe in this browser meanwhile.' : Store.mode === 'shared' ? 'Courses, rings and inventory are saved with this page and sync to every device (and anyone you share it with). A copy is also kept in this browser.' : Store.mode === 'readonly' ? 'This is a read-only view. Your changes stay in this browser only.' : 'Saved in this browser. Open the page on claude.ai to sync across devices.';
@@ -2368,7 +2386,7 @@ function wire() {
   $('#setRiderFirst').addEventListener('change', e => { App.data.settings.riderFirst = e.target.checked; commit(); });
   $('#btnRiders').addEventListener('click', () => riderBoard());
   $('#btnExport').addEventListener('click', async () => { const json = JSON.stringify(App.data, null, 2); const fn = 'course-designer-backup.json'; if (Store.downloadsNs) { try { await Store.downloadsNs.save({ filename: fn, data: json }); } catch (e) {} } else { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' })); a.download = fn; a.click(); } });
-  $('#importFile').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { const d = JSON.parse(await f.text()); if (!d.courses || !d.rings) throw 0; Store.data = d; App.courseId = d.courses[0]?.id || null; commit(); toast('Backup imported'); } catch { toast('That file is not a Ringcraft backup'); } e.target.value = ''; });
+  $('#importFile').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { const d = JSON.parse(await f.text()); if (!d.courses || !d.rings) throw 0; Store.data = d; App.courseId = d.courses[0]?.id || null; commit(); toast('Backup imported'); } catch { toast('That file is not a RingCraft backup'); } e.target.value = ''; });
   $('#btnReset').addEventListener('click', () => askConfirm('Reset everything?', 'Rings, inventory and ALL saved courses go back to the defaults. Export a backup first if you want to keep them.', 'Reset', () => { Store.data = defaultData(); App.courseId = null; commit(); }));
   document.addEventListener('keydown', e => {
     const tag = document.activeElement?.tagName; const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
@@ -2401,6 +2419,70 @@ function riderView(id, fromBoard) {
   root.innerHTML = riderCourseHTML(c, App.ringOf(c), App.data.settings, { back: fromBoard || App.data.courses.some(x => x.published) });
   $('#rvBack')?.addEventListener('click', () => riderBoard()); riderBindZoom(root);
 }
+
+// ---------- Self-update channel: releases are published to BTormey23/ringcraft/release ----------
+const RELEASE = { owner: 'BTormey23', repo: 'ringcraft', dir: 'release' };
+const verNum = v => parseInt(String(v || '').replace(/\D/g, ''), 10) || 0;
+async function fetchRelease(path) {
+  const c = GH.cfg() || {};
+  const r = await fetch(`${GH.base()}/repos/${RELEASE.owner}/${RELEASE.repo}/contents/${RELEASE.dir}/${path}?ref=main&t=${Date.now()}`,
+    { headers: { Accept: 'application/vnd.github.raw', ...(c.token ? { Authorization: 'Bearer ' + c.token } : {}) }, cache: 'no-store' });
+  if (!r.ok) { const e = new Error('Release file ' + path + ' unavailable (' + r.status + ')'); e.status = r.status; throw e; }
+  return r.text();
+}
+async function sha256hex(text) { const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)); return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join(''); }
+const Upd = { rel: null, busy: false };
+function renderUpd(html) { const b = $('#updBox'); if (b) b.innerHTML = html; }
+async function checkUpdate(manual) {
+  if (manual) renderUpd('Checking…');
+  try {
+    const rel = JSON.parse(await fetchRelease('release.json'));
+    if (verNum(rel.version) > verNum(APP_VERSION)) {
+      Upd.rel = rel;
+      renderUpd(`<div class="upd-card"><b>RingCraft ${esc(rel.version)} is available</b> (you have ${APP_VERSION}).<br>${esc(rel.notes || '')}<div style="margin-top:8px">${GH.ok() ? '<button class="btn primary sm" id="btnUpdInstall">Install update</button>' : '<span>Connect your site under <b>Website</b> above to install it.</span>'}</div></div>`);
+      const ib = $('#btnUpdInstall'); if (ib) ib.onclick = installUpdate;
+      if (!manual) toast('RingCraft ' + rel.version + ' is available — see Setup');
+    } else if (manual) renderUpd(`You're on the latest version (${APP_VERSION}).`);
+  } catch (e) {
+    if (manual) renderUpd(e.status === 404 ? `You're on the latest version (${APP_VERSION}).` : 'Could not check for updates right now — ' + esc(e.message));
+  }
+}
+async function installUpdate() {
+  const rel = Upd.rel; if (!rel || Upd.busy || !GH.ok()) return; Upd.busy = true;
+  const onApp = /app\.html$/.test(location.pathname); const flagship = !!App.data.settings.flagship;
+  try {
+    const plan = [];
+    for (const f of rel.files) {
+      let target = f.path;
+      if (f.role === 'app') target = onApp ? 'app.html' : 'index.html';
+      if (f.role === 'landing') { if (!flagship) continue; target = 'index.html'; }
+      if (f.role === 'flagship' && !flagship) continue;
+      if (/^(data|board)\.json$/.test(target)) continue; // never touch course data
+      plan.push({ f, target });
+    }
+    const payloads = [];
+    for (const [i, { f, target }] of plan.entries()) { // download + verify everything BEFORE writing anything
+      renderUpd(`Downloading ${i + 1} of ${plan.length}: ${esc(target)}…`);
+      const body = (await Promise.all(f.parts.map(p => fetchRelease(p)))).join('');
+      if (f.sha256 && (await sha256hex(body)) !== f.sha256) throw new Error(target + ' failed its integrity check — nothing was changed. Try again in a few minutes.');
+      payloads.push({ f, target, body });
+    }
+    for (const [i, { f, target, body }] of payloads.entries()) {
+      renderUpd(`Installing ${i + 1} of ${payloads.length}: ${esc(target)}…`);
+      if (f.b64) await GH.putB64(target, body.replace(/\s/g, ''), `RingCraft ${rel.version}: ${target}`);
+      else await GH.putFile(target, body, `RingCraft ${rel.version}: ${target}`);
+    }
+    renderUpd(`<div class="upd-card"><b>RingCraft ${esc(rel.version)} installed.</b> Your site republishes in about a minute — then reload this page.<div style="margin-top:8px"><button class="btn sm" onclick="location.reload()">Reload</button></div></div>`);
+  } catch (e) { console.warn(e); renderUpd('<div class="upd-card"><b>Update stopped:</b> ' + esc(e.message) + '</div>'); }
+  finally { Upd.busy = false; }
+}
+function demoBar() {
+  const s = App.data.settings; const show = s.demo && !GH.ok() && BUILD === 'web';
+  let el = $('#demoBar');
+  if (show && !el) { $('#app').insertAdjacentHTML('afterbegin', '<div class="demo-bar" id="demoBar">You’re exploring the RingCraft demo — edits stay in this browser. <a href="mailto:brian@briantormey.com?subject=RingCraft%20for%20my%20stable">Get RingCraft for your stable →</a></div>'); $('#app').style.gridTemplateRows = 'auto auto 1fr'; }
+  if (!show && el) { el.remove(); $('#app').style.gridTemplateRows = ''; }
+}
+
 (async function main() {
   document.body.dataset.build = BUILD;
   const h = location.hash || ''; const qs = new URLSearchParams(location.search);
@@ -2411,9 +2493,13 @@ function riderView(id, fromBoard) {
   await Store.init();
   if (App.data.settings.riderFirst && !wantsDesigner) { riderBoard(); return; }
   App._wired = true; wire();
+  demoBar();
+  $('#btnUpdCheck').addEventListener('click', () => checkUpdate(true));
+  if (BUILD === 'web' && GH.ok()) setTimeout(() => checkUpdate(false), 2500);
   App.courseId = App.data.courses.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0]?.id || null;
   renderAll();
   setSaveState('saved', Store.mode === 'shared' ? 'Synced' : Store.mode === 'readonly' ? 'Read-only' : 'Saved in this browser');
   if (!App.data.courses.length) openModal('new');
 })();
-</script></body></html>
+</script><script>if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}</script>
+</body></html>
